@@ -22,6 +22,10 @@ public class EmailService {
     String port;
     @Value("${email.protocol}")
     String protocol;
+    @Value("${email.proxy.host}")
+    String proxyHost;
+    @Value("${email.proxy.port}")
+    String proxyPort;
     @Value("${email.folder}")
     String folder;
     @Value("${email.fetch.size}")
@@ -45,8 +49,8 @@ public class EmailService {
         props.setProperty("mail.imap.port", port);
         props.setProperty("mail.imap.user", username);
         props.setProperty("mail.store.protocol", protocol);
-        props.setProperty("mail.imaps.proxy.host", "web-proxy.corp.hp.com");
-        props.setProperty("mail.imaps.proxy.port", "8080");
+        props.setProperty("mail.imaps.proxy.host", proxyHost);
+        props.setProperty("mail.imaps.proxy.port", proxyPort);
 //        props.setProperty("mail.imaps.proxy.user", proxyUser);
 //        props.setProperty("mail.imaps.proxy.password", proxyPassword);
     }

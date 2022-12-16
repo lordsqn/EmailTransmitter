@@ -1,8 +1,10 @@
 package pl.lssystems.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import pl.lssystems.model.Email;
 import pl.lssystems.services.EmailService;
 
@@ -27,6 +29,22 @@ public class EmailController {
     @GetMapping("/emails/{email}")
     List<Email> forEmail(@PathVariable String email) throws MessagingException, IOException {
         return emailService.getLatestEmailsForEmail(email);
+    }
+
+    @GetMapping("/test/{target}/{mode}")
+    public ResponseEntity<String> test(@PathVariable String target, @PathVariable String mode) throws MessagingException, IOException {
+        System.out.println("Controller test: " + target + " | " + mode);
+
+        if (target.equals("ws")) {
+            ResponseEntity.ok().body("OK");
+        }
+        if (target.equals("xxx")) {
+            return ResponseEntity.badRequest().body("Unknown target: " + target + "; Available targets: " + "ws, adapter");
+        }
+        if ( target.equals("error")) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Mock error response");
+        }
+        return ResponseEntity.ok("OK");
     }
 
 }
